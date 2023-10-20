@@ -6,6 +6,7 @@ import errorMiddleware from './middlewares/error/errorMiddleware';
 import verifyJWTMiddleware from './middlewares/verifyJWTMiddleware';
 import mongoose from 'mongoose';
 import authRouter from './routes/auth';
+import employeesRouter from './routes/employees';
 
 switch (process.env.NODE_ENV) {
   case 'development': {
@@ -25,6 +26,7 @@ app.use(express.json());
 app.use('/auth', authRouter);
 
 app.use(verifyJWTMiddleware);
+app.use('/employees', employeesRouter);
 
 // Handle wrong route
 app.use((req: Request, res: Response, next: NextFunction) => {

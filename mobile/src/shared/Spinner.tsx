@@ -5,9 +5,10 @@ import SpinnerSvg from '../assets/spinner.svg';
 
 type Props = {
   style?: object;
+  width?: number;
 };
 
-function Spinner({ style }: Props) {
+function Spinner({ style, width = 120 }: Props) {
   const animationValue = useRef(new Animated.Value(0)).current;
 
   Animated.loop(
@@ -26,7 +27,7 @@ function Spinner({ style }: Props) {
 
   return (
     <Animated.View style={[{ transform: [{ rotate: rotateValue }] }, style]}>
-      <SpinnerSvg width={120} height={120} />
+      <SpinnerSvg width={width} height={width} />
     </Animated.View>
   );
 }

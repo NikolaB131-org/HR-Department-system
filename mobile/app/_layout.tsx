@@ -5,15 +5,17 @@ import { Colors } from '../src/constants/colors';
 import { SessionProvider, useSession } from '../src/utils/authContext';
 
 function InitialLayout() {
-  const { session } = useSession();
+  const { isSessionLoading, session } = useSession();
 
   useEffect(() => {
-    if (session) {
-      router.replace('/home');
-    } else {
-      router.replace('/login');
+    if (!isSessionLoading) {
+      if (session) {
+        router.replace('/employees');
+      } else {
+        router.replace('/login');
+      }
     }
-  }, [session]);
+  }, [isSessionLoading, session]);
 
   return null;
 }
@@ -32,7 +34,9 @@ function RootLayout() {
           contentStyle: { backgroundColor: '#FFF' },
         }}>
         <Stack.Screen name="login" options={{ title: 'Login' }} />
-        <Stack.Screen name="home/index" options={{ title: 'Home' }} />
+        <Stack.Screen name="employees/index" options={{ title: 'Сотрудники' }} />
+        <Stack.Screen name="employees/[id]" options={{ title: 'Сотрудник' }} />
+        <Stack.Screen name="profile/index" options={{ title: 'Профиль' }} />
       </Stack>
       <InitialLayout />
     </SessionProvider>

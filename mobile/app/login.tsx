@@ -1,3 +1,4 @@
+import { Stack } from 'expo-router';
 import { useState } from 'react';
 import { Alert, Pressable, StyleSheet, View } from 'react-native';
 
@@ -9,16 +10,24 @@ import { useSession } from '../src/utils/authContext';
 
 function LoginPage() {
   const { signIn } = useSession();
-  const [inputValue, setInputValue] = useState('');
+  const [usernameInputValue, setUsernameInputValue] = useState('');
+  const [passwordInputValue, setPasswordInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const onButtonPress = async () => {
-    if (inputValue.length > 2) {
+    if (usernameInputValue.length > 2) {
       setIsLoading(true);
-      const res = await fetch('');
+      const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/auth/login`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username: usernameInputValue, password: passwordInputValue }),
+      });
       if (res.ok) {
-        const token = await res.json();
-        signIn(token);
+        const token = (await res.json()).accessToken;
+        signIn(usernameInputValue, token);
       }
       setIsLoading(false);
     } else {
@@ -28,16 +37,23 @@ function LoginPage() {
 
   return (
     <>
+      <Stack.Screen options={{ headerBackVisible: false }} />
       <View style={styles.wrapper}>
         <View style={styles.container}>
           <MyTextInput
             style={[styles.inputAndButton, styles.input]}
             placeholder="Имя пользователя"
-            onChangeText={setInputValue}
-            value={inputValue}
+            onChangeText={setUsernameInputValue}
+            value={usernameInputValue}
+          />
+          <MyTextInput
+            style={[styles.inputAndButton, styles.input]}
+            placeholder="Пароль"
+            onChangeText={setPasswordInputValue}
+            value={passwordInputValue}
           />
           <Pressable style={[styles.inputAndButton, styles.button]} onPress={onButtonPress}>
-            <MyText style={styles.buttonText}>Login</MyText>
+            <MyText style={styles.buttonText}>Войти</MyText>
           </Pressable>
           <MyText style={styles.hintText}>Если вы не зарегистрированы, ваш аккаунт будет создан автоматически.</MyText>
         </View>

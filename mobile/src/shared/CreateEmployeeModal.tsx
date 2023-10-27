@@ -33,6 +33,12 @@ function CreateEmployeeModal({ isVisible, setIsVisible, onConfirm }: Props) {
       yearsOfExperience: +inputValueYearsOfExperience,
     });
     setIsVisible(false);
+    setInputValueName('');
+    setInputValueAge('');
+    setInputValueEmail('');
+    setInputValuePhoneNumber('');
+    setInputValueSalary('');
+    setInputValueYearsOfExperience('');
   };
 
   return (

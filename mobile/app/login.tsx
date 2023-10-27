@@ -28,6 +28,8 @@ function LoginPage() {
       if (res.ok) {
         const token = (await res.json()).accessToken;
         signIn(usernameInputValue, token);
+      } else {
+        Alert.alert('Ошибка аутентификации', (await res.json()).errMessage);
       }
       setIsLoading(false);
     } else {
